@@ -20,19 +20,19 @@
     "!tslint.json"
   ],
   "win": {
-    "icon": "dist",
+    "icon": "build/icons/win/app.ico",
     "target": [
       "portable"
     ]
   },
   "mac": {
-    "icon": "dist",
+    "icon": "build/icons/mac/app.icns",
     "target": [
       "dmg"
     ]
   },
   "linux": {
-    "icon": "dist",
+    "icon": "build/icons/png",
     "target": [
       "AppImage"
     ]
