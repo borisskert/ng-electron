@@ -1,11 +1,62 @@
-language: node_js
-node_js:
-  - "11"
-addons:
-  chrome: stable
-script:
-  - npm ci
-  - npm run lint
-  - npm run test:ci
-  - npm run build:web:prod
-  - npm run build:electron:prod
+matrix:
+  include:
+    - language: node_js
+      node_js:
+        - '11'
+      addons:
+        chrome: stable
+      script:
+        - npm ci
+        - npm run lint
+        - npm run test:ci
+        - npm run build:web:prod
+    - language: node_js
+      os: osx
+      node_js:
+        - '11'
+      addons:
+        chrome: stable
+      script:
+        - npm run electron:mac
+      deploy:
+        provider: releases
+        skip_cleanup: true
+        api_key:
+          secure: IEzPXRQqW02Hsa8TjVI5NMFFdQBCmQj8OY17yGLoBmbnJy19icknxJZ++S6gQW8GjaeXmzz4tdbyelzr7BXEi7IxmIwI5bUvtz745fCh9SviWaR4awafovy6NIid3JEyqFypZZYg52rXb/oARdCrctQvIQQO7ak66XKPBm6bTlCeuYMyvZy+ZQUIcbEYeSM8MUJe4sfScmpU/e0RBGlNuxA49ncY08r3rppGg732YhNvxay27MmGRUsVL1IHvcoZ7x94IBec7XxbOTV7VQ3foMTCmm+s1FMk40CISIOD18elaCI1sYCyOzi1tJHBdhGWlA6wjh3p9ZzQ462LOSAaoNqRZBocajSgqwQ1evls7miMwdEYPmt35H3nQmaGR8T1gHB7QD4+a0zK916EuN2vs2pUTTakOKJVXDbAFyeyMqvxYZCfkYAVLArHld/FfTigor9ILGuVf63L6sqEzXSEswdaoTWDIn+hdvMkpnGyx2z8F3xNsTPWT2q4cwDZI3HbVkvHzXGe6QBGICMQrpfJqlJGly0HWUPrABTv35vs4ytrbkf94Iaw/pBtH0jHCzhyPMRoDUQIiqPZd5qxUXA4/xapWgHGDal58UpkmuH40nCfXIZ6pwaUPPcpEYkPFa5dHLpZJZ5a104OfpcytbZVUe9Aj/k8QHC0Ztp008fDoA8=
+        file_glob: true
+        file: release/angular-electron-*.dmg
+        on:
+          repo: borisskert/ng-electron
+          tags: true
+    - language: node_js
+      os: windows
+      node_js:
+        - '11'
+      addons:
+        chrome: stable
+      script:
+        - npm run electron:windows
+      deploy:
+        provider: releases
+        skip_cleanup: true
+        api_key:
+          secure: IEzPXRQqW02Hsa8TjVI5NMFFdQBCmQj8OY17yGLoBmbnJy19icknxJZ++S6gQW8GjaeXmzz4tdbyelzr7BXEi7IxmIwI5bUvtz745fCh9SviWaR4awafovy6NIid3JEyqFypZZYg52rXb/oARdCrctQvIQQO7ak66XKPBm6bTlCeuYMyvZy+ZQUIcbEYeSM8MUJe4sfScmpU/e0RBGlNuxA49ncY08r3rppGg732YhNvxay27MmGRUsVL1IHvcoZ7x94IBec7XxbOTV7VQ3foMTCmm+s1FMk40CISIOD18elaCI1sYCyOzi1tJHBdhGWlA6wjh3p9ZzQ462LOSAaoNqRZBocajSgqwQ1evls7miMwdEYPmt35H3nQmaGR8T1gHB7QD4+a0zK916EuN2vs2pUTTakOKJVXDbAFyeyMqvxYZCfkYAVLArHld/FfTigor9ILGuVf63L6sqEzXSEswdaoTWDIn+hdvMkpnGyx2z8F3xNsTPWT2q4cwDZI3HbVkvHzXGe6QBGICMQrpfJqlJGly0HWUPrABTv35vs4ytrbkf94Iaw/pBtH0jHCzhyPMRoDUQIiqPZd5qxUXA4/xapWgHGDal58UpkmuH40nCfXIZ6pwaUPPcpEYkPFa5dHLpZJZ5a104OfpcytbZVUe9Aj/k8QHC0Ztp008fDoA8=
+        file_glob: true
+        file: release/angular-electron *.exe
+        on:
+          repo: borisskert/ng-electron
+          tags: true
+
+#deploy:
+#  provider: releases
+#  skip_cleanup: true
+#  api_key:
+#    secure: IEzPXRQqW02Hsa8TjVI5NMFFdQBCmQj8OY17yGLoBmbnJy19icknxJZ++S6gQW8GjaeXmzz4tdbyelzr7BXEi7IxmIwI5bUvtz745fCh9SviWaR4awafovy6NIid3JEyqFypZZYg52rXb/oARdCrctQvIQQO7ak66XKPBm6bTlCeuYMyvZy+ZQUIcbEYeSM8MUJe4sfScmpU/e0RBGlNuxA49ncY08r3rppGg732YhNvxay27MmGRUsVL1IHvcoZ7x94IBec7XxbOTV7VQ3foMTCmm+s1FMk40CISIOD18elaCI1sYCyOzi1tJHBdhGWlA6wjh3p9ZzQ462LOSAaoNqRZBocajSgqwQ1evls7miMwdEYPmt35H3nQmaGR8T1gHB7QD4+a0zK916EuN2vs2pUTTakOKJVXDbAFyeyMqvxYZCfkYAVLArHld/FfTigor9ILGuVf63L6sqEzXSEswdaoTWDIn+hdvMkpnGyx2z8F3xNsTPWT2q4cwDZI3HbVkvHzXGe6QBGICMQrpfJqlJGly0HWUPrABTv35vs4ytrbkf94Iaw/pBtH0jHCzhyPMRoDUQIiqPZd5qxUXA4/xapWgHGDal58UpkmuH40nCfXIZ6pwaUPPcpEYkPFa5dHLpZJZ5a104OfpcytbZVUe9Aj/k8QHC0Ztp008fDoA8=
+#  file_glob: true
+#  file:
+#    - release/angular-electron-*.dmg
+#    - release/angular-electron *.exe
+#  on:
+#    repo: borisskert/ng-electron
+#    branch: issue/#2
+#    tags: false
