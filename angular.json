@@ -56,6 +56,42 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "electron-production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.electron-prod.ts"
+                },
+                {
+                  "replace": "src/app/example/service/browser.example-data.service.ts",
+                  "with": "src/app/example/service/file-system.example-data.service.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            },
+            "electron": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/example/service/browser.example-data.service.ts",
+                  "with": "src/app/example/service/file-system.example-data.service.ts"
+                }
+              ]
             }
           }
         },
