@@ -9,7 +9,7 @@ import { ElectronService } from './electron.service';
 @Injectable()
 export class MyExampleDataService implements ExampleDataService {
 
-  private _fs;
+  private filesystem;
 
   constructor(private readonly electron: ElectronService) {}
 
@@ -50,12 +50,12 @@ export class MyExampleDataService implements ExampleDataService {
   }
 
   private get fs() {
-    if (this._fs) {
-      return this._fs;
+    if (this.filesystem) {
+      return this.filesystem;
     }
 
-    this._fs = this.createFs();
-    return this._fs;
+    this.filesystem = this.createFs();
+    return this.filesystem;
   }
 
   private createFs() {
