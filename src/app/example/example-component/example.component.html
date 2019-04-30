@@ -1,0 +1,4 @@
+<label for="input_content">Enter content:</label>
+<textarea id="input_content" class="example_content-input" [(ngModel)]="content"></textarea>
+<button (click)="saveContent()">Save</button>
+<div *ngIf="error">{{error | json }}</div>
