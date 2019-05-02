@@ -1,6 +1,6 @@
 {
   "name": "ng-electron",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "ng": "npx ng",
     "start": "node postinstall-web && npx ng serve",
