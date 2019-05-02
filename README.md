@@ -26,7 +26,7 @@ This project uses [Electron](https://electronjs.org) version 4.0.0 to build a de
 
 ### Development server
 
-* Run `electron:serve` to serve your app via electron.
+* Run `electron:serve` to serve your app via Electron.
 Notice that you have to serve your app via the Angular-way before that.
 
 ### Build
@@ -38,9 +38,9 @@ Notice that you have to serve your app via the Angular-way before that.
 
 ### Run
 
-* Run `npm run electron:local` to run the electron app locally.
+* Run `npm run electron:local` to run the Electron-based app locally.
 
 ## Further help
 
 * To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-* To get more help how to build and run electron go check out the [official Electron-Website](https://electronjs.org).
+* To get more help how to build and run the app via Electron go check out the [official Electron-Website](https://electronjs.org).
