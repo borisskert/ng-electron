@@ -22,6 +22,8 @@ Run `npm run test:ci` to execute unit tests in a CI environment.
 
 ## Build and run (Electron way)
 
+This project uses [Electron](https://electronjs.org) version 4.0.0 to build a desktop app.
+
 ### Development server
 
 Run `electron:serve` to serve your app via electron.
