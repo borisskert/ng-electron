@@ -1,6 +1,13 @@
-# ng-electron
+# ng-electron [![Build Status](https://travis-ci.com/borisskert/ng-electron.svg?branch=master)](https://travis-ci.com/borisskert/ng-electron)
 
 This project shows how to integrate a standard [Angular](https://angular.io)-Application into [Electron](https://electronjs.org). 
+
+## Persistence
+
+| Environment | Persistence  layer |
+|-------------|--------------------|
+| Angular     | Saves content value to browser's local-storage with key `ng-electron/example-data`
+| Electron    | Saves content value to filesystem in file `${HOME}/Library/Application Support/ng-electron/example-data.txt` (macos) respectively `%APPDATA%\ng-electron\example-data.txt` (windows)
 
 ## Build and run (default Angular way)
 
