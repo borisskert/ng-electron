@@ -1,4 +1,4 @@
-# NgElectron
+# ng-electron
 
 This project shows how to integrate a standard [Angular](https://angular.io)-Application into [Electron](https://electronjs.org). 
 
