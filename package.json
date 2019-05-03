@@ -1,6 +1,8 @@
 {
   "name": "ng-electron",
   "version": "0.3.0",
+  "description": "Code which shows how to integrate an Angular-based app into Electron",
+  "author": "Boris Skert",
   "scripts": {
     "ng": "npx ng",
     "start": "node postinstall-web && npx ng serve",
