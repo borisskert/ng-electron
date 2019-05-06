@@ -8,8 +8,8 @@ This project shows how to integrate a standard [Angular](https://angular.io)-App
 
 | Environment | Persistence  layer |
 |-------------|--------------------|
-| Angular     | Saves content value to browser's local-storage with key `ng-electron/example-data`
-| Electron    | Saves content value to filesystem in file `${HOME}/Library/Application Support/ng-electron/example-data.txt` (macos) respectively `%APPDATA%\ng-electron\example-data.txt` (windows)
+| Angular     | Saves content value to browser's indexedDB `level-js-ng-electron` by key `example-data`
+| Electron    | Saves content value into a level-DB on filesystem in directory `${HOME}/Library/Application Support/ng-electron/ng-electron.db` (macos) respectively `%APPDATA%\ng-electron/ng-electron.db` (windows)
 
 ## Build and run (default Angular way)
 
