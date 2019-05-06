@@ -12,11 +12,15 @@ export class ElectronService {
     return this.electron ? this.electron.remote : null;
   }
 
+  public require(module: string) {
+    if (window && window.require) {
+      return window.require(module);
+    }
+  }
+
   private get electron(): Electron.RendererInterface {
     if (!this.electronRenderer) {
-      if (window && window.require) {
-        this.electronRenderer = window.require('electron');
-      }
+      this.electronRenderer = this.require('electron');
     }
 
     return this.electronRenderer;

@@ -1,26 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExampleComponent } from './example.component';
-import { ExampleDataService } from '../service/example-data.service';
-import { Observable } from 'rxjs';
-import { ExampleData } from '../example-data.interface';
-import { Provider } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
-class MockedExampleDataService implements ExampleDataService {
-  read(): Observable<ExampleData> {
-    return Observable.create('');
-  }
-
-  save(exampleData: ExampleData): Observable<void> {
-    return Observable.create(null);
-  }
-}
-
-const exampleDataProvider: Provider = {
-  provide: ExampleDataService,
-  useClass: MockedExampleDataService
-};
+import { AbstractLeveldownProvider } from '../../service/level/abstract-leveldown.provider';
+import { LeveldownProvider } from '../../service/level/memdown.provider';
+import { ExampleDataService } from '../service/example-data.service';
 
 describe('ExampleComponent', () => {
   let component: ExampleComponent;
@@ -33,7 +17,11 @@ describe('ExampleComponent', () => {
       ],
       declarations: [ ExampleComponent ],
       providers: [
-        exampleDataProvider
+        {
+          provide: AbstractLeveldownProvider,
+          useClass: LeveldownProvider
+        },
+        ExampleDataService,
       ]
     })
       .compileComponents();

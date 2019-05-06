@@ -1,8 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { ExampleModule } from './example/example.module';
+import { ElectronService } from './service/electron.service';
+import { AbstractLeveldownProvider } from './service/level/abstract-leveldown.provider';
+import { LeveldownProvider } from './service/level/used-leveldown.provider';
+
+const leveldownProvider: Provider = {
+  provide: AbstractLeveldownProvider,
+  useClass: LeveldownProvider
+};
 
 @NgModule({
   declarations: [
@@ -12,7 +20,10 @@ import { ExampleModule } from './example/example.module';
     BrowserModule,
     ExampleModule,
   ],
-  providers: [],
+  providers: [
+    leveldownProvider,
+    ElectronService,
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {}

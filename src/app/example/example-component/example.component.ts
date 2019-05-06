@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ExampleDataService } from '../service/example-data.service';
 
-
 @Component({
   selector: 'app-example',
   templateUrl: './example.component.html',
@@ -19,7 +18,8 @@ export class ExampleComponent implements OnInit {
         this.content = exampleData.content;
         this.error = null;
       }, error => {
-        this.error = error;
+        console.log(error);
+        this.error = error.toString();
       }
     );
   }
@@ -30,7 +30,8 @@ export class ExampleComponent implements OnInit {
         this.error = null;
       },
       error => {
-        this.error = error;
+        console.log(error);
+        this.error = error.toString();
       }
     );
   }

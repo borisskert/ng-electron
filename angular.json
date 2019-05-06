@@ -38,6 +38,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/app/service/level/used-leveldown.provider.ts",
+                  "with": "src/app/service/level/level-js.provider.ts"
                 }
               ],
               "optimization": true,
@@ -64,8 +68,8 @@
                   "with": "src/environments/environment.electron-prod.ts"
                 },
                 {
-                  "replace": "src/app/example/service/browser.example-data.service.ts",
-                  "with": "src/app/example/service/file-system.example-data.service.ts"
+                  "replace": "src/app/service/level/used-leveldown.provider.ts",
+                  "with": "src/app/service/level/leveldown.provider.ts"
                 }
               ],
               "optimization": true,
@@ -85,11 +89,23 @@
                 }
               ]
             },
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                },
+                {
+                  "replace": "src/app/service/level/used-leveldown.provider.ts",
+                  "with": "src/app/service/level/level-js.provider.ts"
+                }
+              ]
+            },
             "electron": {
               "fileReplacements": [
                 {
-                  "replace": "src/app/example/service/browser.example-data.service.ts",
-                  "with": "src/app/example/service/file-system.example-data.service.ts"
+                  "replace": "src/app/service/level/used-leveldown.provider.ts",
+                  "with": "src/app/service/level/leveldown.provider.ts"
                 }
               ]
             }
@@ -101,6 +117,9 @@
             "browserTarget": "ng-electron:build"
           },
           "configurations": {
+            "development": {
+              "browserTarget": "ng-electron:build:development"
+            },
             "production": {
               "browserTarget": "ng-electron:build:production"
             }

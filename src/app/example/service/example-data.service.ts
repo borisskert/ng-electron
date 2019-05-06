@@ -1,9 +1,21 @@
 import { ExampleData } from '../example-data.interface';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { LevelService } from '../../service/level/level.service';
+import { map } from 'rxjs/operators';
 
 @Injectable()
-export abstract class ExampleDataService {
-  abstract save(exampleData: ExampleData): Observable<void>;
-  abstract read(): Observable<ExampleData>;
+export class ExampleDataService {
+
+  constructor(private readonly levelService: LevelService) {}
+
+  public save(exampleData: ExampleData): Observable<void> {
+    return this.levelService.put('example-data', exampleData.content);
+  }
+
+  public read(): Observable<ExampleData> {
+    return this.levelService.get('example-data').pipe(
+      map(value => ({ content: value }))
+    );
+  }
 }
