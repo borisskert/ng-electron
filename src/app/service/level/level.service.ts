@@ -9,10 +9,7 @@ import * as levelup from 'levelup';
 })
 export class LevelService {
 
-  private readonly options = {
-    keyAsBuffer: false,
-    asBuffer: false,
-  };
+  private readonly options = {};
 
   private readonly db;
 
