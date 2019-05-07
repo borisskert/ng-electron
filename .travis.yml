@@ -35,12 +35,18 @@ matrix:
           repo: borisskert/ng-electron
           tags: true
     - language: node_js
-      os: windows
+      os: osx
       node_js:
         - '11'
       addons:
         chrome: stable
       script:
+        - ENCRYPTED_CERT_P12=encrypted.cert.p12
+        - DECRYPTED_CERT=cert.pem
+        - curl -L -o "${ENCRYPTED_CERT_P12}" ${CSC_LINK}
+        - export CSC_KEY_PASSWORD=$(echo ${BASE64_CSC_KEY_PASSWORD} | base64 -D)
+        - openssl pkcs12 -in "${ENCRYPTED_CERT_P12}" -nodes -out "${DECRYPTED_CERT}" -password pass:${CSC_KEY_PASSWORD}
+        - sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain "${DECRYPTED_CERT}"
         - npm run electron:windows
       deploy:
         provider: releases
