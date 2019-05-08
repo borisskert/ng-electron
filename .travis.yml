@@ -17,6 +17,12 @@ matrix:
       addons:
         chrome: stable
       script:
+        - ENCRYPTED_CERT_P12=encrypted.cert.p12
+        - DECRYPTED_CERT=cert.pem
+        - curl -L -o "${ENCRYPTED_CERT_P12}" ${CSC_LINK}
+        - export CSC_KEY_PASSWORD=$(echo ${BASE64_CSC_KEY_PASSWORD} | base64 -D)
+        - openssl pkcs12 -in "${ENCRYPTED_CERT_P12}" -nodes -out "${DECRYPTED_CERT}" -password pass:${CSC_KEY_PASSWORD}
+        - sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain "${DECRYPTED_CERT}"
         - npm run electron:mac
       deploy:
         provider: releases
@@ -29,12 +35,18 @@ matrix:
           repo: borisskert/ng-electron
           tags: true
     - language: node_js
-      os: windows
+      os: osx
       node_js:
         - '11'
       addons:
         chrome: stable
       script:
+        - ENCRYPTED_CERT_P12=encrypted.cert.p12
+        - DECRYPTED_CERT=cert.pem
+        - curl -L -o "${ENCRYPTED_CERT_P12}" ${CSC_LINK}
+        - export CSC_KEY_PASSWORD=$(echo ${BASE64_CSC_KEY_PASSWORD} | base64 -D)
+        - openssl pkcs12 -in "${ENCRYPTED_CERT_P12}" -nodes -out "${DECRYPTED_CERT}" -password pass:${CSC_KEY_PASSWORD}
+        - sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain "${DECRYPTED_CERT}"
         - npm run electron:windows
       deploy:
         provider: releases
@@ -46,3 +58,8 @@ matrix:
         on:
           repo: borisskert/ng-electron
           tags: true
+
+env:
+  global:
+    # encrypted CSC settings
+    - secure:  "PMf8fMFG3e6QxBeaYGXEU8bjq4gi4EsnppwsuOOLwkeDwVxvJHdgePfUiJ1v8cpbJyFUMqn4Y4fPzMZrLfJiZl3fxnGIPG9OZjhn0tLFM9QRfxGPBG/MJI9Av55ZpG4URqyTeG0MBWUgyK2Kav0gAJlKkEg8amDwrjNWmt3M6x+Mt66hF8Y4bIre8AJlDst35TQxdVJjjZKHdgrlD5Px92YsdVH3aPtODRCKRDTqAERdWAdDF64oTMAeHz3UWmTadyOigmngAz6WesympbftKPKFopSu6SPnp/boRA/dXUKb1kbpSMpiJp+DsYyDuwlo/VjyIErAsNDzfN62LFAL3xXheE2DY+0JQ96FfSDzoEX/8dZn9lwg5JC8q3R9bVVE7l6jIfZjzDpFcUB7QHE3pYh/CWHqAR8+bXjQ7cvtq7JSt1N2+GE372uMcQcdnHECmmcaK32nOWj4wNgLIB15JCvSHJmrYWNOFAef3iIDZ8qCIEz2Dokr6OHHa679UN6jZFYY7bVfRYAvrf67ZtnJkXkWFZqT5dzKzircbRuyIkiVB0baNIdtF+0VjavJA94NN//gMi9rOMyUQ5nl7RZo8AcT9zgzSUx7sChlOnqsETvbLknCfTFXsIEcZbxAX0J5WXtJqrnQ+meTv6BMzUUA7zzC4uuyyUPkuO8qnILjzUY="
