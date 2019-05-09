@@ -9,6 +9,16 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
+  <script>
+    /**
+     * https://stackoverflow.com/questions/50356408/upgrading-to-angular-6-x-gives-uncaught-referenceerror-global-is-not-defined
+     */
+    var global = global || window;
+    var process = process || global.process || window.process || {
+      env: { DEBUG: undefined },
+      version: []
+    };
+  </script>
   <app-root></app-root>
 </body>
 </html>

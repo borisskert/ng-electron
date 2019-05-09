@@ -1,10 +1,18 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { ExampleModule } from './example/example.module';
+import { AbstractLeveldownProvider } from './service/level/abstract-leveldown.provider';
+import { LeveldownProvider } from './service/level/memdown.provider';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: AbstractLeveldownProvider,
+          useClass: LeveldownProvider
+        }
+      ],
       imports: [
         ExampleModule,
       ],
