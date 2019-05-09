@@ -1,15 +1,19 @@
 matrix:
   include:
     - language: node_js
+      os: linux
       node_js:
         - '11'
       addons:
         chrome: stable
       script:
-        - npm ci
+        # no need for `npm ci`, travis-ci does this automatically
         - npm run lint
         - npm run test:ci
         - npm run build:web:prod
+        - npm run build:electron:prod
+
+    # deployment only works on osx
     - language: node_js
       os: osx
       node_js:
@@ -17,32 +21,24 @@ matrix:
       addons:
         chrome: stable
       script:
-        - npm run electron:mac
+        # no need for `npm ci`, travis-ci does this automatically
+        - npm run lint
+        - npm run test:ci
+        - npm run build:web:prod
+        - npm run build:electron:prod
       deploy:
-        provider: releases
-        skip_cleanup: true
-        api_key:
-          secure: IEzPXRQqW02Hsa8TjVI5NMFFdQBCmQj8OY17yGLoBmbnJy19icknxJZ++S6gQW8GjaeXmzz4tdbyelzr7BXEi7IxmIwI5bUvtz745fCh9SviWaR4awafovy6NIid3JEyqFypZZYg52rXb/oARdCrctQvIQQO7ak66XKPBm6bTlCeuYMyvZy+ZQUIcbEYeSM8MUJe4sfScmpU/e0RBGlNuxA49ncY08r3rppGg732YhNvxay27MmGRUsVL1IHvcoZ7x94IBec7XxbOTV7VQ3foMTCmm+s1FMk40CISIOD18elaCI1sYCyOzi1tJHBdhGWlA6wjh3p9ZzQ462LOSAaoNqRZBocajSgqwQ1evls7miMwdEYPmt35H3nQmaGR8T1gHB7QD4+a0zK916EuN2vs2pUTTakOKJVXDbAFyeyMqvxYZCfkYAVLArHld/FfTigor9ILGuVf63L6sqEzXSEswdaoTWDIn+hdvMkpnGyx2z8F3xNsTPWT2q4cwDZI3HbVkvHzXGe6QBGICMQrpfJqlJGly0HWUPrABTv35vs4ytrbkf94Iaw/pBtH0jHCzhyPMRoDUQIiqPZd5qxUXA4/xapWgHGDal58UpkmuH40nCfXIZ6pwaUPPcpEYkPFa5dHLpZJZ5a104OfpcytbZVUe9Aj/k8QHC0Ztp008fDoA8=
-        file_glob: true
-        file: release/ng-electron-*.dmg
-        on:
-          repo: borisskert/ng-electron
-          tags: true
-    - language: node_js
-      os: windows
-      node_js:
-        - '11'
-      addons:
-        chrome: stable
-      script:
-        - npm run electron:windows
-      deploy:
-        provider: releases
-        skip_cleanup: true
-        api_key:
-          secure: IEzPXRQqW02Hsa8TjVI5NMFFdQBCmQj8OY17yGLoBmbnJy19icknxJZ++S6gQW8GjaeXmzz4tdbyelzr7BXEi7IxmIwI5bUvtz745fCh9SviWaR4awafovy6NIid3JEyqFypZZYg52rXb/oARdCrctQvIQQO7ak66XKPBm6bTlCeuYMyvZy+ZQUIcbEYeSM8MUJe4sfScmpU/e0RBGlNuxA49ncY08r3rppGg732YhNvxay27MmGRUsVL1IHvcoZ7x94IBec7XxbOTV7VQ3foMTCmm+s1FMk40CISIOD18elaCI1sYCyOzi1tJHBdhGWlA6wjh3p9ZzQ462LOSAaoNqRZBocajSgqwQ1evls7miMwdEYPmt35H3nQmaGR8T1gHB7QD4+a0zK916EuN2vs2pUTTakOKJVXDbAFyeyMqvxYZCfkYAVLArHld/FfTigor9ILGuVf63L6sqEzXSEswdaoTWDIn+hdvMkpnGyx2z8F3xNsTPWT2q4cwDZI3HbVkvHzXGe6QBGICMQrpfJqlJGly0HWUPrABTv35vs4ytrbkf94Iaw/pBtH0jHCzhyPMRoDUQIiqPZd5qxUXA4/xapWgHGDal58UpkmuH40nCfXIZ6pwaUPPcpEYkPFa5dHLpZJZ5a104OfpcytbZVUe9Aj/k8QHC0Ztp008fDoA8=
-        file_glob: true
-        file: release/ng-electron *.exe
-        on:
-          repo: borisskert/ng-electron
-          tags: true
+        - skip_cleanup: true
+          provider: script
+          script: /bin/bash .travis/deploy.sh
+          on:
+            tags: true
+            repo: borisskert/ng-electron
+
+env:
+  global:
+    # export CSC_LINK=[secure]
+    - secure: "lz8KpgRZFjY8+iuvlygc8txDlmKdTSk0fPl6M0iZ7Rqj4p+YTii1S3jI1O0JxrCU6Dio0KweshBrshkBkcSw3GXjfsfzBBXOrsKvQ6N3KaBoG5DLprfDapfr9geNbMx1/E04yabWzH2uhsnLPT3772twKSbEJ3vtas+zofCpGCGWD8Tc/nEfmO63JQldrOiCKurPATcCrJDgH4lkZVABl0Gppv3OCR3qFLOBu627ykygZRyinOwci25RcXcCs2Woh2c7+IVkaCm7nfNfNfM5rkJ/0E3bqM83DVuqmvqzSGZ45ack+au+aQjpnIszj+3OalFg0tUEjGVb3eEmBOsJRipRrOk+ArhVcIsK53Sxi8mZP+fORqfrcaMUha1wrVC2FPFESRbUGV37fJIheIC2RGArYScbYSt1dV2GUcnEGaUGByMQMEdeLX7/3OL9ePom3ZWYMydEfR80E3aER6YCyVcoO5TO7yA9yX6ZTNOX6kmjcwRoKvrAY/Bj53jlBS5TWqygzw8nXVjFjDDtmtBMgk5j1vcRM88Hj34EkZVlJ7xURvFWnFy0a6Wxh0JoAzU5ztzd7i14/1EexiWdzxnq6nHLw47236FQ96gq6I9cdLNcLu62rqboqq/x9B1J+aAIQ1qMKjaXbiEU45zOCol0E7evlDr0nyY6bvYzw0qVcYY="
+    # export BASE64_CSC_KEY_PASSWORD=[secure]
+    - secure: "KJQ0ePZQX7gl6ozQmWaD9/TxEKlfeAg0Y9I3ySDKTMwbgnk6YSh9Ck/5wJdr866J3v1CMRGCiUvbJB6RJJDKw/IgprLUa+W/AutVI+D8pgDC/w/1sLA3yP6pQSvbk5IlsQ3mhruMCtcKt5O+mBWJam+b0O7693HT4JR9u9hlHs257X2maML0rCm57Hbmm7/wHkCYLrnbWC+wWKQi9W/qNMNKR/AgbsvycYBvN5ep8+IEwalqWrSX87UmDoX3Bg96CQyLtWym2h1l9nlZpBobEHOS0yYhTHjyJCExhRV4Pk8AsgYMDSP006Ct1e45QB8R1j4POFUlzGq3iqR7K/NkRIfbX3OSPI5HeX7GCyRxD9Vgh237NgNlBObWwjgbzhbaMMZ3ZQpF6ARwQHNWptyb59Dp1jqClfBgzzsbm8xzOnWpyAe2Wq163hCNnvmDYAPha2WNA3GsNo67BZeI2/8qyoziQ9Y7Yg1j6y9y4nfMGP4kgliubgjujHpPzdUZTEXbXXjgLE3cpZcWJi2EyVPCnI5EQWJdTJKZJw6Wm498lTL2yHlrpghF0JZYY8+1chR5vSzvDn3i4DZ541Dkrrh46xUQ+NZNNZjBms4L5iNZgQYpEVRZHKeVmikgTMyP1MNfFC9uHeeBi3+InorOuhwlCJZnZLqq8vCs0nUG9JrA2hE="
+    # export GH_TOKEN=[secure]
+    - secure: "EP40mCd4QPmVJEcL2kymloQPk5cjr3EJj2vDP/UDqJHfa6rZp52CRxNCMbt1BGAZij8cunR2/MgqTLczImHW/RBigbmBZvuGvE08imAY6nI+AMHUG11Bkckwk2gpoAfoRPGDgEpxsOayyIMDOVfM/ifIN1Q3ajz3KRTIjyTGKZkoxt0BwjSSC6er4vCB6l3kOKaSB8n0A/4goM3fTOrvQjeqm9NGJjQh9TI4C4EGj0fDJ05vsEbB2Aqul9d+IIzPJw34vhWPAm7XvIHx2d7uLBxox/e1G89Iu1m29lxC+aZXUQW/RPXiV+pwnASji8/GDmxlkYE/EFxMXUOLNQ9TL7/cgUxKZnidlkJg2uVzx7kNL+pdiowO1+D9U5jw8cAFW1l4YDkXfVzdkifxPI2TdmbCOqmjKU805zzTxG3F+dJyhAXkKVzoFCXd4gvNyrrU5ydYBPZGjh48opJEXbBap0/OHDwLGsA1BNuZqlilu5IwsrrNGhyho4Vq0CUYA/tyJJ7yQWmjNQlnUA04VBA2wW0BeRTZdv32LU8jHWYQ9KP2YmsfwrX/MLRK+H3HcrwUvSyuSRe798V6K9eDuTrNxEPJxq+I2JJR0cpVZ0huyzKmA7ui149lIN2o7JGzlHT91B0kYXoaCOJAbS6ukedY59ZXPRhA5W7h4H3vSwHAyxM="
